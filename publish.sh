@@ -55,8 +55,8 @@ git push origin main
 git push origin "v$VERSION"
 
 # Publish to npm
-echo "→ Publishing v$VERSION to npm..."
-npm publish --access public
+read -rp "→ Enter npm OTP: " OTP
+npm publish --access public --otp="$OTP"
 
 echo ""
 echo "✓ Published @borrowbetter/swsdk@$VERSION"

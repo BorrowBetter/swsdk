@@ -1,5 +1,7 @@
 # @borrowbetter/swsdk
 
+> **Internal use only.** This package is maintained by [BorrowBetter](https://borrowbetter.com) for internal projects. It is published publicly for convenience but is not intended for general use. No support or stability guarantees are provided for external consumers.
+
 TypeScript SDK for the [Spinwheel](https://spinwheel.io) credit data and debt profile API. Provides type-safe access to user connection, debt profile fetching, and hydrated user data.
 
 ## Installation

@@ -298,7 +298,7 @@ export interface UserProfile {
 	emailAddress?: string;
 	ssnLastFourDigits?: string;
 	dob?: string;
-	dateOfBirth?: string;
+	ssn?: string;
 	creditScore?: number;
 	model?: CreditScoreModel;
 	addresses?: SpinwheelAddress[];

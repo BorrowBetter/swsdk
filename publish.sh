@@ -27,6 +27,12 @@ if [[ "$BRANCH" != "main" ]]; then
   exit 1
 fi
 
+# Ensure logged into npm
+if ! npm whoami &>/dev/null; then
+  echo "Error: not logged into npm — run 'npm login' first"
+  exit 1
+fi
+
 # Pull latest
 git pull --ff-only
 

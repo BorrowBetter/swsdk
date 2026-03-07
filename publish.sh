@@ -2,11 +2,12 @@
 set -euo pipefail
 
 # Usage:
-#   ./publish.sh          # patch bump (0.1.0 → 0.1.1)
-#   ./publish.sh minor    # minor bump (0.1.0 → 0.2.0)
-#   ./publish.sh major    # major bump (0.1.0 → 1.0.0)
+#   ./publish.sh <otp>          # patch bump (0.1.0 → 0.1.1)
+#   ./publish.sh <otp> minor    # minor bump (0.1.0 → 0.2.0)
+#   ./publish.sh <otp> major    # major bump (0.1.0 → 1.0.0)
 
-BUMP=${1:-patch}
+OTP=${1:?Usage: ./publish.sh <npm-otp> [patch|minor|major]}
+BUMP=${2:-patch}
 
 # Validate bump type
 if [[ "$BUMP" != "patch" && "$BUMP" != "minor" && "$BUMP" != "major" ]]; then
@@ -61,7 +62,6 @@ git push origin main
 git push origin "v$VERSION"
 
 # Publish to npm
-read -rp "→ Enter npm OTP: " OTP
 npm publish --access public --otp="$OTP"
 
 echo ""

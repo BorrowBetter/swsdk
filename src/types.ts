@@ -691,7 +691,7 @@ export interface UserData {
 	connectionId?: string;
 	connectionStatus?: string;
 	networkToken?: string;
-	profile?: UserProfile;
+	profile: UserProfile;
 }
 
 export interface HydratedUserData {
@@ -702,7 +702,7 @@ export interface HydratedUserData {
 	networkToken?: string;
 	updatedOn: number;
 	createdOn: number;
-	profile?: UserProfile;
+	profile: UserProfile;
 	autoLoanSummary?: LoanSummary;
 	homeLoanSummary?: LoanSummary;
 	personalLoanSummary?: LoanSummary;

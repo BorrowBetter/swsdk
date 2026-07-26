@@ -63,12 +63,14 @@ export class SpinwheelSDK {
 		const clients: SpinwheelClients = {
 			client: ky.create({
 				prefixUrl: urls.standard,
+				retry: config.retry,
 				headers: {
 					Authorization: `Bearer ${config.apiKey}`,
 				},
 			}),
 			secureClient: ky.create({
 				prefixUrl: urls.secure,
+				retry: config.retry,
 				headers: {
 					Authorization: `Bearer ${config.apiKey}`,
 				},

@@ -1,4 +1,8 @@
-import type { FetchDebtProfileOptions, SpinwheelClients } from "./types";
+import type {
+	FetchDebtProfileOptions,
+	SpinwheelClients,
+	SpinwheelRequestOptions,
+} from "./types";
 
 /**
  * Debt Profile API — Discover > Debt Profile
@@ -22,7 +26,11 @@ export class DebtProfileAPI {
 	 *
 	 * @see https://docs.spinwheel.io/reference/fetch-debt-profile
 	 */
-	async fetch(userId: string, options: FetchDebtProfileOptions): Promise<void> {
+	async fetch(
+		userId: string,
+		options: FetchDebtProfileOptions,
+		requestOptions?: SpinwheelRequestOptions,
+	): Promise<void> {
 		const { liabilityType, ...json } = options;
 		const searchParams = new URLSearchParams();
 
@@ -33,6 +41,7 @@ export class DebtProfileAPI {
 		await this.clients.client.post(`v1/users/${userId}/debtProfile`, {
 			searchParams,
 			json,
+			...requestOptions,
 		});
 	}
 }

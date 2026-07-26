@@ -1,4 +1,8 @@
-import type { GetUserResponse, SpinwheelClients } from "./types";
+import type {
+	GetUserResponse,
+	SpinwheelClients,
+	SpinwheelRequestOptions,
+} from "./types";
 
 type GetUserInput = { userId: string } | { extUserId: string };
 
@@ -17,13 +21,16 @@ export class UserManagementAPI {
 	 * @param input - Either `userId` (Spinwheel's ID) or `extUserId` (your external ID)
 	 * @see https://docs.spinwheel.io/reference/get-user-profile
 	 */
-	async get(input: GetUserInput): Promise<GetUserResponse> {
+	async get(
+		input: GetUserInput,
+		requestOptions?: SpinwheelRequestOptions,
+	): Promise<GetUserResponse> {
 		const searchParams = new URLSearchParams(input);
 		searchParams.append("unmask", "accountNumber");
 		searchParams.append("unmask", "ssn");
 
 		return this.clients.secureClient
-			.get("v1/users", { searchParams })
+			.get("v1/users", { searchParams, ...requestOptions })
 			.json<GetUserResponse>();
 	}
 }

@@ -109,8 +109,28 @@ data.miscellaneousLiabilities;
 new SpinwheelSDK({
   apiKey: string;    // Required — your Spinwheel API key
   sandbox?: boolean; // Optional — defaults to false (production)
+  retry?: number | RetryOptions; // Optional — default ky retry for every request; overridable per call
 });
 ```
+
+### Retry
+
+Retry is [ky's](https://github.com/sindresorhus/ky#retry) — pass a count or a `RetryOptions` object. Set a client-wide default via the constructor, and override it per request by passing an options object as the last argument to any method:
+
+```typescript
+const spinwheel = new SpinwheelSDK({
+  apiKey: "your-api-key",
+  retry: { limit: 3 }, // default for all requests
+});
+
+// Override for a single call — e.g. poll the profile harder:
+await spinwheel.userManagement.get({ userId }, { retry: { limit: 5 } });
+
+// Disable retries for one call:
+await spinwheel.userManagement.get({ userId }, { retry: 0 });
+```
+
+> **Note:** ky only retries idempotent methods (GET/PUT/HEAD/DELETE/OPTIONS/TRACE) by default. Retry applies out of the box to `userManagement.get` (a GET). The POST-based methods (`connect.*`, `debtProfile.fetch`) will not retry unless you opt in with `retry: { methods: ["post"] }` — weigh the double-submit risk before doing so.
 
 ## Response Shape
 
@@ -145,6 +165,7 @@ All types are exported directly from the package:
 ```typescript
 import type {
   SpinwheelConfig,
+  SpinwheelRequestOptions,
   HydratedUserData,
   UserData,
   CreditReport,

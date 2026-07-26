@@ -4,6 +4,7 @@ import type {
 	ConnectPreverifiedPhoneInput,
 	ConnectPreverifiedPhoneResponse,
 	SpinwheelClients,
+	SpinwheelRequestOptions,
 } from "./types";
 
 /**
@@ -22,9 +23,13 @@ export class ConnectAPI {
 	 */
 	async preverifiedPhone(
 		input: ConnectPreverifiedPhoneInput,
+		requestOptions?: SpinwheelRequestOptions,
 	): Promise<ConnectPreverifiedPhoneResponse> {
 		return this.clients.client
-			.post("v1/users/connect/preverified/phoneNumber", { json: input })
+			.post("v1/users/connect/preverified/phoneNumber", {
+				json: input,
+				...requestOptions,
+			})
 			.json<ConnectPreverifiedPhoneResponse>();
 	}
 
@@ -35,9 +40,13 @@ export class ConnectAPI {
 	 */
 	async networkToken(
 		input: ConnectNetworkTokenInput,
+		requestOptions?: SpinwheelRequestOptions,
 	): Promise<ConnectNetworkTokenResponse> {
 		return this.clients.client
-			.post("v1/users/connect/network", { json: input })
+			.post("v1/users/connect/network", {
+				json: input,
+				...requestOptions,
+			})
 			.json<ConnectNetworkTokenResponse>();
 	}
 }

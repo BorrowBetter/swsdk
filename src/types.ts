@@ -1,4 +1,4 @@
-import type { KyInstance } from "ky";
+import type { KyInstance, Options as KyOptions } from "ky";
 
 // ============================================================================
 // SDK Configuration
@@ -7,6 +7,14 @@ import type { KyInstance } from "ky";
 export interface SpinwheelConfig {
 	apiKey: string;
 	sandbox?: boolean;
+	/** Default ky retry config applied to every request. Overridable per call. Defaults to ky's default (2 retries). */
+	retry?: KyOptions["retry"];
+}
+
+/** Per-request options passed as the trailing arg to any API method. */
+export interface SpinwheelRequestOptions {
+	/** ky retry config for this request. Overrides the client-level `retry`. */
+	retry?: KyOptions["retry"];
 }
 
 // Internal clients passed to API classes

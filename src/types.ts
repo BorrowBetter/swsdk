@@ -56,6 +56,8 @@ export interface ConnectNetworkTokenAudit {
 	userConsentDate: string;
 }
 
+export type ConnectInclude = "CREDIT_REPORT";
+
 export interface ConnectNetworkTokenInput {
 	/** A unique external ID for the user */
 	extUserId: string;
@@ -67,6 +69,12 @@ export interface ConnectNetworkTokenInput {
 	dateOfBirth: string;
 	/** Documentation of your own user verification */
 	audit: ConnectNetworkTokenAudit;
+	/**
+	 * Additional data to return alongside the user. With `CREDIT_REPORT`, the
+	 * response includes credit report and liability data. Must be omitted or
+	 * non-empty — an empty array is rejected with a 400.
+	 */
+	include?: ConnectInclude[];
 }
 
 // ============================================================================
@@ -330,7 +338,8 @@ export interface CreditCardSummary {
 	noOfCreditCards: number;
 	currentOutstandingBalance: number;
 	availableCredit: number;
-	creditUtilization: number;
+	/** Null when utilization can't be derived (e.g. zero available credit) */
+	creditUtilization: number | null;
 	updatedOn: number;
 }
 
@@ -702,15 +711,21 @@ export interface UserData {
 	profile: UserProfile;
 }
 
-export interface HydratedUserData {
-	userId: string;
-	extUserId?: string;
-	isBorrower?: boolean;
-	isChampion?: boolean;
-	networkToken?: string;
-	updatedOn: number;
-	createdOn: number;
-	profile: UserProfile;
+export type ConnectDataStatusType = "SUCCESS" | "ERROR";
+
+export interface ConnectDataStatus {
+	status: ConnectDataStatusType;
+	/**
+	 * 2000 — success, credit report and liability data returned
+	 * 4040 — user connected, but no existing credit report was found
+	 * 4030 — user connected, but no data returned (account not configured)
+	 * 5000 — user connected, but credit report retrieval failed
+	 */
+	statusCode: number;
+}
+
+/** Credit report and liability data, shared by hydrated reads and connect snapshots. */
+export interface UserDebtProfileData {
 	autoLoanSummary?: LoanSummary;
 	homeLoanSummary?: LoanSummary;
 	personalLoanSummary?: LoanSummary;
@@ -726,12 +741,32 @@ export interface HydratedUserData {
 	creditCards?: CreditCard[];
 }
 
+/** User data returned by `connect.networkToken`, hydrated when `include` is used. */
+export interface ConnectNetworkTokenData extends UserData, UserDebtProfileData {
+	createdOn?: number;
+	updatedOn?: number;
+	/** Present when `include: ["CREDIT_REPORT"]` — outcome of the snapshot lookup */
+	dataStatus?: ConnectDataStatus;
+}
+
+export interface HydratedUserData extends UserDebtProfileData {
+	userId: string;
+	extUserId?: string;
+	isBorrower?: boolean;
+	isChampion?: boolean;
+	networkToken?: string;
+	updatedOn: number;
+	createdOn: number;
+	profile: UserProfile;
+}
+
 // ============================================================================
 // Response Convenience Types
 // ============================================================================
 
 export type ConnectPreverifiedPhoneResponse = SpinwheelResponse<UserData>;
-export type ConnectNetworkTokenResponse = SpinwheelResponse<UserData>;
+export type ConnectNetworkTokenResponse =
+	SpinwheelResponse<ConnectNetworkTokenData>;
 export type GetUserResponse = SpinwheelResponse<HydratedUserData>;
 
 // ============================================================================

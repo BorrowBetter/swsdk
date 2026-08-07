@@ -57,6 +57,41 @@ const result = await spinwheel.connect.networkToken({
 });
 ```
 
+`networkToken` also accepts `include`, which returns a snapshot of the user's *already existing*
+credit report alongside the connect response, saving a `userManagement.get` round trip:
+
+```typescript
+const { data } = await spinwheel.connect.networkToken({
+  extUserId: "your-internal-user-id",
+  networkToken: "token-from-verification",
+  ssnLastFourDigits: "1234",
+  dateOfBirth: "1990-01-15",
+  audit: { userConsentDate: "2025-01-01" },
+  include: ["CREDIT_REPORT"],
+});
+
+if (data.dataStatus?.status === "SUCCESS") {
+  data.creditReports;
+  data.creditCards;
+  data.creditCardSummary; // ...and the other liabilities and summaries
+}
+```
+
+The connect itself succeeds independently of the snapshot — check `dataStatus` to see whether
+the credit data came back:
+
+| `statusCode` | Meaning |
+|--------------|---------|
+| `2000` | Success — credit reports, liabilities, and summaries returned |
+| `4040` | Connected, but no existing credit report was found |
+| `4030` | Connected, but no data returned — account not configured for this |
+| `5000` | Connected, but credit report retrieval failed |
+
+> Only `CREDIT_REPORT` is supported, and an empty array is rejected with a 400 — omit the field
+> entirely if you don't want the extra data. This returns an existing report only; it does not
+> trigger a pull, so `debtProfile.fetch` is still the way to source one (a user with no report
+> yet comes back `4040`).
+
 ### Debt Profile
 
 Trigger an asynchronous credit pull. Results are retrieved via `userManagement.get()` once processing completes.

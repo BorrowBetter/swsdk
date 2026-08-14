@@ -203,6 +203,38 @@ export type OverduePeriod =
 	| "LATE_90_DAYS"
 	| "LATE_120_DAYS"
 	| "NOT_OVERDUE";
+/**
+ * MOP-style status of the account itself (6 = collection, 7 = wage earner
+ * plan, 8 = repossession, 9 = charge-off). Distinct scale from
+ * {@link AdverseRating}. Union covers values observed in prod payloads;
+ * Spinwheel documents additional codes (D, F, G, J, M, #, $), hence the
+ * string escape hatch.
+ * @see https://docs.spinwheel.io/docs/account-ratings-1
+ */
+export type AccountRating =
+	| "0"
+	| "1"
+	| "2"
+	| "3"
+	| "4"
+	| "5"
+	| "6"
+	| "7"
+	| "8"
+	| "9"
+	| "A"
+	| "B"
+	| "C"
+	| "E"
+	| "H"
+	| "S"
+	| "U"
+	| "Z"
+	| (string & {});
+/**
+ * Delinquency-event rating carried by the *AdverseRating fields. Not
+ * enumerated in Spinwheel's docs; only 1-6, G, H, J, L observed in prod.
+ */
 export type AdverseRating =
 	| "0"
 	| "1"
@@ -386,7 +418,7 @@ export interface LiabilityProfile {
 	interestRateDerived?: number;
 	loanOriginationAmount?: number;
 	highCreditAmount?: number;
-	accountRating?: string;
+	accountRating?: AccountRating;
 	liabilitySubtype?: string;
 	debtType?: DebtType;
 	pendingLoanTermInMonthsDerived?: number;

@@ -233,7 +233,7 @@ export type AccountRating =
 	| (string & {});
 /**
  * Delinquency-event rating carried by the *AdverseRating fields. Not
- * enumerated in Spinwheel's docs; only 1-6, G, H, J, L observed in prod.
+ * enumerated in Spinwheel's docs; observed subset in prod: 1-6, G, H, J, L.
  */
 export type AdverseRating =
 	| "0"

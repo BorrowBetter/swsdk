@@ -206,9 +206,8 @@ export type OverduePeriod =
 /**
  * MOP-style status of the account itself (6 = collection, 7 = wage earner
  * plan, 8 = repossession, 9 = charge-off). Distinct scale from
- * {@link AdverseRating}. Union covers values observed in prod payloads;
- * Spinwheel documents additional codes (D, F, G, J, M, #, $), hence the
- * string escape hatch.
+ * {@link AdverseRating}. Union covers Spinwheel's documented codes; the
+ * string escape hatch remains for undocumented values in bureau data.
  * @see https://docs.spinwheel.io/docs/account-ratings-1
  */
 export type AccountRating =
@@ -225,11 +224,18 @@ export type AccountRating =
 	| "A"
 	| "B"
 	| "C"
+	| "D"
 	| "E"
+	| "F"
+	| "G"
 	| "H"
+	| "J"
+	| "M"
 	| "S"
 	| "U"
 	| "Z"
+	| "#"
+	| "$"
 	| (string & {});
 /**
  * Delinquency-event rating carried by the *AdverseRating fields. Not

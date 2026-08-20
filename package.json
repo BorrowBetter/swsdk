@@ -1,6 +1,6 @@
 {
 	"name": "@borrowbetter/swsdk",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"description": "Spinwheel credit data and debt profile SDK",
 	"license": "MIT",
 	"repository": {

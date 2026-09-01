@@ -4,8 +4,8 @@ import { DebtProfileAPI } from "./debt-profile";
 import type { SpinwheelClients, SpinwheelConfig } from "./types";
 import { UserManagementAPI } from "./user-management";
 
-export type { SpinwheelConfig } from "./types";
 export type * from "./types";
+export type { SpinwheelConfig } from "./types";
 
 const BASE_URLS = {
 	production: {

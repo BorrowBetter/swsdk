@@ -75,7 +75,9 @@ async function main() {
 			creditReport: { sourceBureau: "TransUnion", type: "1_BUREAU.FULL" },
 			creditScore: { sourceBureau: "TransUnion", model: "VANTAGE_SCORE_3_0" },
 		});
-		console.log("    Initiated successfully (async — processing in background)");
+		console.log(
+			"    Initiated successfully (async — processing in background)",
+		);
 		debtFetchOk = true;
 	} catch (error) {
 		if (
@@ -128,7 +130,9 @@ async function main() {
 	if (updatedUser.data.creditReports?.length) {
 		console.log("\n    Credit Reports:");
 		for (const report of updatedUser.data.creditReports) {
-			console.log(`      ${report.sourceBureau} (${report.type}) — id: ${report.id}`);
+			console.log(
+				`      ${report.sourceBureau} (${report.type}) — id: ${report.id}`,
+			);
 			for (const score of report.creditScoreDetails ?? []) {
 				console.log(`        Score: ${score.creditScore} (${score.model})`);
 			}

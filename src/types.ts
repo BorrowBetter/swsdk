@@ -460,7 +460,8 @@ export interface LiabilityProfile {
 	collectionAccountStatus?: CollectionAccountStatus;
 }
 
-export interface CardProfile extends Omit<LiabilityProfile, "loanTermInMonths"> {
+export interface CardProfile
+	extends Omit<LiabilityProfile, "loanTermInMonths"> {
 	creditLimit?: number;
 	creditUtilization?: number;
 	creditCardNumberMasked?: string;

@@ -24,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          persist-credentials: false
 
       # No .nvmrc or .node-version in this repo, so the version is pinned
       # inline (package.json only says engines.node >=18). Matches lpb.

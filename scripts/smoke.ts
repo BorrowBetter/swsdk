@@ -6,6 +6,7 @@
  */
 
 import "dotenv-flow/config";
+import { isHTTPError } from "ky";
 import { SpinwheelSDK } from "../src/index";
 
 function getApiKey(): string {
@@ -80,11 +81,7 @@ async function main() {
 		);
 		debtFetchOk = true;
 	} catch (error) {
-		if (
-			error instanceof Error &&
-			"response" in error &&
-			(error as { response: Response }).response.status === 403
-		) {
+		if (isHTTPError(error) && error.response.status === 403) {
 			console.log(
 				"    SKIPPED: Account not enabled for debt profile (contact Spinwheel support)",
 			);
@@ -144,21 +141,11 @@ async function main() {
 	console.log("=".repeat(60));
 }
 
-main().catch(async (error: unknown) => {
+main().catch((error: unknown) => {
 	console.error("\nERROR:", error instanceof Error ? error.message : error);
 
-	if (
-		error !== null &&
-		typeof error === "object" &&
-		"response" in error &&
-		error.response instanceof Response
-	) {
-		try {
-			const body = await error.response.json();
-			console.error("\nAPI Response:", JSON.stringify(body, null, 2));
-		} catch {
-			// already consumed or not JSON
-		}
+	if (isHTTPError(error)) {
+		console.error("\nAPI Response:", JSON.stringify(error.data, null, 2));
 	}
 
 	process.exit(1);

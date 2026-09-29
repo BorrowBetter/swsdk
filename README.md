@@ -12,7 +12,7 @@ npm install @borrowbetter/swsdk
 
 ## Requirements
 
-- Node.js >= 18
+- Node.js >= 22
 - Spinwheel API key (provided by your Spinwheel account manager)
 
 ## Quick Start

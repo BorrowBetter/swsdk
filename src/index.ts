@@ -64,6 +64,7 @@ export class SpinwheelSDK {
 			client: ky.create({
 				prefix: urls.standard,
 				retry: config.retry,
+				timeout: config.timeout,
 				headers: {
 					Authorization: `Bearer ${config.apiKey}`,
 				},
@@ -71,6 +72,7 @@ export class SpinwheelSDK {
 			secureClient: ky.create({
 				prefix: urls.secure,
 				retry: config.retry,
+				timeout: config.timeout,
 				headers: {
 					Authorization: `Bearer ${config.apiKey}`,
 				},

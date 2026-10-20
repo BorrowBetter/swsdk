@@ -145,6 +145,7 @@ new SpinwheelSDK({
   apiKey: string;    // Required — your Spinwheel API key
   sandbox?: boolean; // Optional — defaults to false (production)
   retry?: number | RetryOptions; // Optional — default ky retry for every request; overridable per call
+  timeout?: number | false;      // Optional — per-attempt timeout in ms for every request (ky default: 10000)
 });
 ```
 

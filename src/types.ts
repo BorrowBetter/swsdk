@@ -9,6 +9,8 @@ export interface SpinwheelConfig {
 	sandbox?: boolean;
 	/** Default ky retry config applied to every request. Overridable per call. Defaults to ky's default (2 retries). */
 	retry?: KyOptions["retry"];
+	/** Per-attempt timeout in ms, or `false` to disable. Defaults to ky's default (10000). */
+	timeout?: KyOptions["timeout"];
 }
 
 /** Per-request options passed as the trailing arg to any API method. */

@@ -31,27 +31,79 @@ export interface SpinwheelClients {
 
 export type VerificationType = "SMS" | "PHONE_CALL" | "KYC" | "CREDIT_REPORT";
 
-export interface ConnectPreverifiedPhoneAudit {
-	/** The date the user was verified. Formatted as YYYY-MM-DD */
-	verificationDate: string;
-	/** The date the user consented to verification. Formatted as YYYY-MM-DD */
-	userConsentDate: string;
+export type ConsentType = "WRITTEN" | "VERBAL";
+
+export type TosVersion = "v1.0" | "v1.1";
+
+export type TosLanguage = "en";
+
+/** One of `verificationDate` or `identityVerifiedTimestamp` is required. */
+export type ConnectPreverifiedPhoneVerificationTime =
+	| {
+			/** The date the user was verified. Formatted as YYYY-MM-DD */
+			verificationDate: string;
+			identityVerifiedTimestamp?: string;
+	  }
+	| {
+			verificationDate?: string;
+			/** UTC RFC 3339 datetime, not in the future. Takes precedence over `verificationDate`. */
+			identityVerifiedTimestamp: string;
+	  };
+
+/** One of `userConsentDate` or `consentTimestamp` is required. */
+export type ConnectPreverifiedPhoneConsentTime =
+	| {
+			/** The date the user consented to verification. Formatted as YYYY-MM-DD */
+			userConsentDate: string;
+			consentTimestamp?: string;
+	  }
+	| {
+			userConsentDate?: string;
+			/** UTC RFC 3339 datetime within the last 24 hours. Takes precedence over `userConsentDate`. */
+			consentTimestamp: string;
+	  };
+
+export type ConnectPreverifiedPhoneAudit = {
 	/** The type of verification performed */
 	verificationType: VerificationType;
-}
+	/** Defaults to `WRITTEN` */
+	consentType?: ConsentType;
+	/** End User Agreement version. Defaults to `v1.1` */
+	tosVersion?: TosVersion;
+	tosLanguage?: TosLanguage;
+} & ConnectPreverifiedPhoneVerificationTime &
+	ConnectPreverifiedPhoneConsentTime;
 
-export interface ConnectPreverifiedPhoneInput {
+/**
+ * At least one is required: `dateOfBirth`, `firstName` + `lastName`, or
+ * `ssnLastFourDigits`.
+ */
+export type ConnectPreverifiedPhoneIdentifier =
+	| {
+			/** The date of birth. Formatted as YYYY-MM-DD */
+			dateOfBirth: string;
+	  }
+	| {
+			/** Legal first name as it appears on the credit file */
+			firstName: string;
+			/** Legal last name as it appears on the credit file */
+			lastName: string;
+	  }
+	| {
+			/** Last 4 digits of SSN */
+			ssnLastFourDigits: string;
+	  };
+
+export type ConnectPreverifiedPhoneInput = {
 	/** The phone number in E.164 format (e.g., +14155552671) */
 	phoneNumber: string;
-	/** The date of birth. Formatted as YYYY-MM-DD */
-	dateOfBirth: string;
 	/** An existing userId to connect with. One of extUserId or userId is required. */
 	userId?: string;
 	/** A unique external ID for the user. One of extUserId or userId is required. */
 	extUserId?: string;
 	/** Documentation of your own user verification */
 	audit: ConnectPreverifiedPhoneAudit;
-}
+} & ConnectPreverifiedPhoneIdentifier;
 
 export interface ConnectNetworkTokenAudit {
 	/** The date the user consented to verification. Formatted as YYYY-MM-DD */

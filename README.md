@@ -47,6 +47,10 @@ const result = await spinwheel.connect.preverifiedPhone({
 
 const { userId } = result.data;
 
+// `dateOfBirth` can be swapped for `firstName` + `lastName` or `ssnLastFourDigits`.
+// `audit` also accepts `identityVerifiedTimestamp` / `consentTimestamp` (RFC 3339)
+// in place of the dates, plus optional `consentType`, `tosVersion`, `tosLanguage`.
+
 // Network token
 const result = await spinwheel.connect.networkToken({
   extUserId: "your-internal-user-id",

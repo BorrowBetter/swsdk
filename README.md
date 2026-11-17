@@ -142,6 +142,21 @@ data.studentLoans;
 data.miscellaneousLiabilities;
 ```
 
+### Vehicles
+
+Look up vehicle details by license plate and issuing state.
+
+```typescript
+const { data } = await spinwheel.vehicles.parseLicensePlate({
+  licensePlate: "ABC1234",
+  state: "CA",
+});
+
+data.vin;  // "EZVL3FHYP86MXS9UB"
+data.name; // "2019 Ford Focus"
+// also: year, make, model, trim, fuel, color, style, engine, driveType, transmission
+```
+
 ## Configuration
 
 ```typescript
@@ -170,7 +185,7 @@ await spinwheel.userManagement.get({ userId }, { retry: { limit: 5 } });
 await spinwheel.userManagement.get({ userId }, { retry: 0 });
 ```
 
-> **Note:** ky only retries idempotent methods (GET/PUT/HEAD/DELETE/OPTIONS/TRACE) by default. Retry applies out of the box to `userManagement.get` (a GET). The POST-based methods (`connect.*`, `debtProfile.fetch`) will not retry unless you opt in with `retry: { methods: ["post"] }` — weigh the double-submit risk before doing so.
+> **Note:** ky only retries idempotent methods (GET/PUT/HEAD/DELETE/OPTIONS/TRACE) by default. Retry applies out of the box to the GETs (`userManagement.get`, `vehicles.parseLicensePlate`). The POST-based methods (`connect.*`, `debtProfile.fetch`) will not retry unless you opt in with `retry: { methods: ["post"] }` — weigh the double-submit risk before doing so.
 
 ## Response Shape
 

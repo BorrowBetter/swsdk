@@ -873,3 +873,32 @@ export interface FetchDebtProfileOptions {
 		model: CreditScoreModel;
 	};
 }
+
+// ============================================================================
+// Vehicles API Types
+// ============================================================================
+
+export interface ParseLicensePlateInput {
+	/** 5–8 characters */
+	licensePlate: string;
+	/** State that issued the plate */
+	state: USStateCode;
+}
+
+export interface LicensePlateLookup {
+	year: string;
+	make: string;
+	model: string;
+	trim: string;
+	vin: string;
+	fuel: string;
+	/** e.g. "2019 Ford Focus" */
+	name: string;
+	color: string;
+	style: string;
+	engine: string;
+	driveType: string;
+	transmission: string;
+}
+
+export type ParseLicensePlateResponse = SpinwheelResponse<LicensePlateLookup>;

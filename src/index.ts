@@ -3,6 +3,7 @@ import { ConnectAPI } from "./connect";
 import { DebtProfileAPI } from "./debt-profile";
 import type { SpinwheelClients, SpinwheelConfig } from "./types";
 import { UserManagementAPI } from "./user-management";
+import { VehiclesAPI } from "./vehicles";
 
 export type * from "./types";
 export type { SpinwheelConfig } from "./types";
@@ -56,6 +57,7 @@ export class SpinwheelSDK {
 	readonly connect: ConnectAPI;
 	readonly debtProfile: DebtProfileAPI;
 	readonly userManagement: UserManagementAPI;
+	readonly vehicles: VehiclesAPI;
 
 	constructor(config: SpinwheelConfig) {
 		const urls = config.sandbox ? BASE_URLS.sandbox : BASE_URLS.production;
@@ -82,5 +84,6 @@ export class SpinwheelSDK {
 		this.connect = new ConnectAPI(clients);
 		this.debtProfile = new DebtProfileAPI(clients);
 		this.userManagement = new UserManagementAPI(clients);
+		this.vehicles = new VehiclesAPI(clients);
 	}
 }

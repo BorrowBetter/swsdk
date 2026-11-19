@@ -117,7 +117,7 @@ await spinwheel.debtProfile.fetch(userId, {
 
 ### User Management
 
-Retrieve a user's full hydrated profile including all liabilities and credit reports. Always uses the secure endpoint with unmasked account number and SSN.
+Retrieve a user's full hydrated profile including all liabilities and credit reports. Always uses the secure endpoint; account number and SSN come back masked unless requested via `unmask`.
 
 ```typescript
 // By Spinwheel user ID
@@ -125,6 +125,12 @@ const { data } = await spinwheel.userManagement.get({ userId });
 
 // By your external user ID
 const { data } = await spinwheel.userManagement.get({ extUserId: "your-id" });
+
+// Unmask sensitive fields
+const { data } = await spinwheel.userManagement.get({
+  userId,
+  unmask: ["accountNumber", "ssn"],
+});
 
 // Available on the hydrated user
 data.profile?.creditScore;

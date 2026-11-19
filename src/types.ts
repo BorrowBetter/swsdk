@@ -843,6 +843,17 @@ export interface HydratedUserData extends UserDebtProfileData {
 }
 
 // ============================================================================
+// User Management API Types
+// ============================================================================
+
+export type UnmaskField = "accountNumber" | "ssn";
+
+export type GetUserInput = ({ userId: string } | { extUserId: string }) & {
+	/** Sensitive fields to return unmasked. Masked unless listed. */
+	unmask?: UnmaskField[];
+};
+
+// ============================================================================
 // Response Convenience Types
 // ============================================================================
 
